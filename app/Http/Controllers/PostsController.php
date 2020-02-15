@@ -41,9 +41,9 @@ class PostsController extends Controller
      * @param Request $request
      * @return Post
      */
-    public function store(Request $request)
+    public function store(Post $post)
     {
-        $post = (new Post($request->all()));
+        $post = (new Post($post->all()));
         $post->user_id = Auth::user()->getAuthIdentifier();
         $post->save();
         return $post;
@@ -55,7 +55,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $posts)
+    public function show(Post $post)
     {
         //
         var_dump('Testing');
@@ -67,7 +67,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $posts)
+    public function edit()
     {
         //
     }
@@ -79,7 +79,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $posts)
+    public function update(Post $post)
     {
         //
     }
@@ -90,8 +90,10 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $posts)
+    public function destroy(Post $post)
     {
         //
     }
+
+
 }

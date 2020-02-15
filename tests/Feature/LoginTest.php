@@ -22,11 +22,7 @@ class LoginTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testRouteExists():void
-    {
-        $response = $this->get('/login');
-        $response->assertStatus(200);
-    }
+
 
     public function testInvalidLogin():void
     {
