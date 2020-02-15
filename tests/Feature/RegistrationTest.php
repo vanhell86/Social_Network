@@ -3,15 +3,17 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testRouteExists()
+    public function testRouteExists():void
     {
         $response = $this->get('/register');
         $response->assertStatus(200);
@@ -59,7 +61,6 @@ class RegistrationTest extends TestCase
 
     public function testPasswordConfirm():void
     {
-
         $this->from('/register')
             ->post('/register',[
                 'email'=>'tests@test.com',
@@ -94,6 +95,7 @@ class RegistrationTest extends TestCase
 
     public function testRegister():void
     {
+        //Notification::fake();
         $user = factory(User::class)->make();
 
         $this->followingRedirects()
@@ -112,6 +114,7 @@ class RegistrationTest extends TestCase
             ]);
 
             $this->assertTrue(auth()->check());
+            //Notification::assertSentTo([$user],VerifiesEmails::class);
     }
 
 
