@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,14 +38,10 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      *
-     * @param PostRequest $request
-     *
+     * @param Request $request
+     * @return Post
      */
-<<<<<<< HEAD
-    public function store(PostRequest $request)
-=======
     public function store(Post $post)
->>>>>>> e6dda136029c4da3b15d5ac25186913e5fc19e45
     {
         $post = (new Post($post->all()));
         $post->user_id = Auth::user()->getAuthIdentifier();
@@ -60,11 +55,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
-    public function show(PostRequest $posts)
-=======
     public function show(Post $post)
->>>>>>> e6dda136029c4da3b15d5ac25186913e5fc19e45
     {
         //
         var_dump('Testing');
@@ -88,11 +79,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
-    public function update(PostRequest $request)
-=======
     public function update(Post $post)
->>>>>>> e6dda136029c4da3b15d5ac25186913e5fc19e45
     {
         //
     }
@@ -103,11 +90,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-<<<<<<< HEAD
-    public function destroy(PostRequest $posts)
-=======
     public function destroy(Post $post)
->>>>>>> e6dda136029c4da3b15d5ac25186913e5fc19e45
     {
         //
     }
