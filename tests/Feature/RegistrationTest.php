@@ -101,6 +101,7 @@ class RegistrationTest extends TestCase
             ->post('/register',[
                 'email'=>'vards@epasts.com',                    //$user->email
                 'name' => 'vards',                              //$user->name
+                'surname' => 'uzvards',
                 'password'=> '12345678',
                 'password_confirmation'=> '12345678',
 

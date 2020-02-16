@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,10 +39,10 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      *
-     * @param Request $request
-     * @return Post
+     * @param PostRequest $request
+     *
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $post = (new Post($request->all()));
         $post->user_id = Auth::user()->getAuthIdentifier();
@@ -55,7 +56,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $posts)
+    public function show(PostRequest $posts)
     {
         //
         var_dump('Testing');
@@ -79,7 +80,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $posts)
+    public function update(PostRequest $request)
     {
         //
     }
@@ -90,7 +91,7 @@ class PostsController extends Controller
      * @param  \App\Post  $posts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $posts)
+    public function destroy(PostRequest $posts)
     {
         //
     }
