@@ -19,6 +19,18 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .nav-item.left > a {
+            color: #636b6f;
+            padding: 0 25px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
@@ -35,8 +47,14 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
 
+                <ul class="navbar-nav mr-auto">
+{{--                    {{ dd( route('home') ) }}--}}
+                    @if( Request::url() != route('home') )
+                        <li class="nav-item left">
+                            <a href="{{ url('/home') }}">Home</a>
+                        </li>
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
