@@ -10,11 +10,22 @@
                     <div class="form-group">
                         <label for="title" class="text-dark">Title</label>
                         <input id="title" type="text" class="form-control @error('title') is-invalid @enderror"
-                               name="title" value="{{ old('title') }}"  autofocus>
+                               name="title" value="{{ old('title') }}" autofocus>
+                        @error('title')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <label for="content" class="text-dark">Your post text</label>
-                        <textarea class="form-control" id="content" name="content"> </textarea>
+                        <label for="content" class="text-dark @error('content') is-invalid @enderror">Your post
+                            text</label>
+                        <textarea class="form-control" id="content" name="content">{{old('content')}} </textarea>
+                        @error('content')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">
                         Submit
