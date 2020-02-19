@@ -11,6 +11,15 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector:'textarea',
+            plugins: 'link code',
+            menubar: false
+        });
+
+    </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -86,7 +95,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item fa fa-user" href="{{ route('profile') }}">
+                                <a class="dropdown-item fa fa-user" href="{{ route('profile.update', Auth::user()->slug())}}">
                                     {{ __('Profile') }}
                                 </a>
 

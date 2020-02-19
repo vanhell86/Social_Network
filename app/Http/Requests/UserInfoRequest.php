@@ -25,9 +25,9 @@ class UserInfoRequest extends FormRequest
     {
         return [
             'address' => ['string', 'max:100', 'nullable'],
-            'phonenumber' => ['max:12'],
-            'bio' => ['max:250'],
-            'dateofbirth' => ['date', 'nullable']
+            'phonenumber' => ['max:200'],
+            'bio' => ['max:25'],
+            'dateofbirth' => ['date','before:today', 'date_format:Y-m-d', 'nullable']
         ];
     }
 }

@@ -133,6 +133,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
     ],
 
     /*
@@ -146,6 +147,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'dateofbirth' => 'date of birth',
+        'phonenumber' => 'phone number',
+        'avatar' => 'profile image'
+    ],
 
 ];

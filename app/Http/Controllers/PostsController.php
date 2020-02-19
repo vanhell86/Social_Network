@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,11 +19,11 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function index()
+    public function index(Post $post)
     {
-        //
+        return (new Post())->paginate(10);
     }
 
     /**
@@ -38,15 +40,16 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      *
-     * @param Request $request
-     * @return Post
+     *
+     * @param PostRequest $post
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Post $post)
+    public function store(PostRequest $post):RedirectResponse
     {
         $post = (new Post($post->all()));
         $post->user_id = Auth::user()->getAuthIdentifier();
         $post->save();
-        return $post;
+        return back()->with('status', 'Post created successfully!');
     }
 
     /**

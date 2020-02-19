@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\UserInfoRequest;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -16,12 +17,23 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function index()
+    {
+        return (new User())->paginate(15);
+    }
+
+    public function show(User $user)
+    {
+        return view('profile/show', ['user' => $user]);
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function profile(): View
+    public function showProfileUpdateForm(User $user): View
     {
-        return view('profile/profile', ['user' => Auth::user()]);
+        return view('profile/update', ['user' => $user]);
     }
 
     /**
@@ -32,14 +44,15 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user->update($request->all());
-        return back();
+        return back()->with('userInfoUpdateStatus', 'Your profile info updated successfully!');
     }
 
     /**
+     *
      * @param ImageRequest $request
-     * @return \Illuminate\Contracts\View\Factory|View
+     * @return RedirectResponse
      */
-    public function update_avatar(ImageRequest $request): View
+    public function update_avatar(ImageRequest $request): RedirectResponse
     {
 
         if ($request->hasFile('avatar')) {
@@ -52,6 +65,6 @@ class UserController extends Controller
             $user->avatar = $fileName;
             $user->save();
         }
-        return view('profile/profile', ['user' => Auth::user()]);
+        return back()->with('imgUploadStatus', 'Your profile image upload successful!');
     }
 }
