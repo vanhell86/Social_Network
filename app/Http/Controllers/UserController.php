@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserInfoRequest;
+use App\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
@@ -14,24 +17,54 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function profile()
+
+    public function index()
     {
-        return view('profile/profile', ['user' => Auth::user()]);
+        return (new User())->paginate(15);
     }
 
-    public function update_avatar(ImageRequest $request)
+    public function show(User $user)
+    {
+        return view('profile/show', ['user' => $user]);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showProfileUpdateForm(User $user): View
+    {
+        return view('profile/update', ['user' => $user]);
+    }
+
+    /**
+     * @param UserInfoRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function edit(UserInfoRequest $request): RedirectResponse
+    {
+        $user = Auth::user();
+        $user->update($request->all());
+        return back()->with('userInfoUpdateStatus', 'Your profile info updated successfully!');
+    }
+
+    /**
+     *
+     * @param ImageRequest $request
+     * @return RedirectResponse
+     */
+    public function update_avatar(ImageRequest $request): RedirectResponse
     {
 
-        if($request->hasFile('avatar')){
+        if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $fileName = time() . '.' . $avatar->getClientOriginalExtension();
 
-            $image = Image::make($avatar)->resize(300,300)->save(storage_path( "app/public/uploads/avatars/" . $fileName));
+            $image = Image::make($avatar)->resize(300, 300)->save(storage_path("app/public/uploads/avatars/" . $fileName));
 
             $user = Auth::user();
             $user->avatar = $fileName;
             $user->save();
         }
-        return view('profile/profile', ['user' => Auth::user()]);
+        return back()->with('imgUploadStatus', 'Your profile image upload successful!');
     }
 }

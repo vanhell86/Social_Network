@@ -19,10 +19,12 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::get('profile', 'UserController@profile')->name('profile');
-Route::post('profile', 'UserController@update_avatar')->name('update.avatar');
+Route::get('profile/{user}/edit', 'UserController@showProfileUpdateForm')->name('profile.update')->middleware('auth');
+Route::get('profile/{user}', 'UserController@show')->name('show.user.info');
+Route::post('profile/{user}', 'UserController@update_avatar')->name('update.avatar')->middleware('auth');
+Route::put('profile/{user}', 'UserController@edit')->name('user.info.update')->middleware('auth');
 
-Route::resource('posts', 'PostsController');
+Route::resource('posts', 'PostsController')->middleware('verified');
 
 
 

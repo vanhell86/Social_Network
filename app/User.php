@@ -16,7 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'email', 'avatar', 'password',
+        'name', 'surname', 'slug', 'email', 'avatar', 'password',
         'address', 'phonenumber', 'bio', 'dateofbirth'
     ];
 
@@ -37,4 +37,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function slug():string
+    {
+        return "$this->id-$this->name-$this->surname";
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    FB v2.0
                 </div>
 
                 <div class="links">
