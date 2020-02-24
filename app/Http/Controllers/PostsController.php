@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,47 +56,47 @@ class PostsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Post  $posts
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return void
      */
     public function show(Post $post)
     {
-        //
-        var_dump('Testing');
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Post  $posts
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit()
+    public function edit(Post $post): View
     {
-        //
+        return view('post/edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $posts
-     * @return \Illuminate\Http\Response
+     * @param PostRequest $request
+     * @param Post $post
+     *
      */
-    public function update(Post $post)
+    public function update(PostRequest $request,Post $post)
     {
-        //
+        $post->update($request->all());
+        return redirect(route('home'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Post  $posts
-     * @return \Illuminate\Http\Response
+     *
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect(route('home'));
     }
 
 
