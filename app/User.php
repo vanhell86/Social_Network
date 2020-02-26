@@ -167,4 +167,17 @@ class User extends Authenticatable implements MustVerifyEmail
             'status'=>'confirmed'])->first();
     }
 
+
+    /**************  Gallery section  ************/
+
+    public function albums()
+    {
+        return $this->hasMany(Album::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
 }
