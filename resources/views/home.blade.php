@@ -53,6 +53,34 @@
                 </div>
             </div>
         </div>
+        {{-- >>>>>>>>>>>>>>>> Friends section <<<<<<<<<<<<<<<<<<< --}}
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-black-50 pt-3">
+                <div class="card mb-3">
+                    <div class="card-header">Friends</div>
+                    <div class="card-body col-md-10 d-flex mx-auto">
+                        @if(count($user->friends) <= 0)
+                        <span>Get some friends!</span>
+
+                        @else
+                            @foreach( $user->friends->paginate(4) as $friend)
+                                <div class="col-md-3">
+                                    <a href="{{route('show.user.info', $friend->slug())}}">
+                                        <label style="overflow: hidden; height: 24px"> {{$friend->name}}</label>
+                                        <img src="{{$friend->getProfilePic()}}" alt=""
+                                             style="width: 150px; height: 150px;">
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    {{$user->friends->paginate(4)->links()}}
+                </div>
+
+            </div>
+        </div>
         {{-- >>>>>>>>>>>>>>>> Post Wall section <<<<<<<<<<<<<<<<<<< --}}
         <div class="row justify-content-center" style="display: flex;">
             <div class="col-md-10 col-md-offset-1 ">
@@ -75,19 +103,28 @@
                                             at: {{$post->created_at}}
                                         </div>
                                     </div>
-                                    @if($post->user == Auth()->user())
+                                    @if($post->user->id == Auth()->user()->id)
+
                                         <div class="d-flex">
                                             <div>
+                                                <a href="{{route('posts.show', $post)}}"
+                                                   class=" btn btn-sm btn-primary">Show</a>
+                                            </div>
+                                            <div class="ml-3 ">
                                                 <a href="{{route('posts.edit', $post)}}"
-                                                   class=" btn btn-sm btn-primary">Edit</a>
+                                                   class=" btn btn-sm btn-primary ">Edit</a>
                                             </div>
                                             <form action="{{route('posts.destroy', $post)}}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <input type="submit" class="btn btn-sm btn-danger ml-3 fa fa-trash-o "
+                                                <input type="submit" class="btn btn-sm btn-danger ml-3"
                                                        value="Delete">
                                             </form>
-
+                                        </div>
+                                    @else
+                                        <div>
+                                            <a href="{{route('posts.show', $post)}}"
+                                               class=" btn btn-sm btn-primary">Show</a>
                                         </div>
                                     @endif
                                 </div>

@@ -5,17 +5,14 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         'name', 'surname', 'slug', 'email', 'avatar', 'password',
         'address', 'phonenumber', 'bio', 'dateofbirth'
@@ -47,7 +44,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     public function  getProfilePic(){
-        return Storage::url('uploads/avatars/'. $this->avatar);
+        if (!File::exists(storage_path("app/public/uploads/$this->id/avatars/" . $this->avatar ))){
+            return Storage::url("uploads/avatars/default.jpg");
+        }
+        return Storage::url("uploads/$this->id/avatars/". $this->avatar);
     }
 
     /************   post relation  ************/
@@ -153,7 +153,6 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
                 'status'=>'confirmed'])->first()
         );
-
     }
 
     public function isFriendWith(User $user)
@@ -167,4 +166,5 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
             'status'=>'confirmed'])->first();
     }
+
 }

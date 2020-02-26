@@ -17,87 +17,52 @@ class PostsController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     *
-     */
-    public function index(Post $post)
+
+    public function index()
     {
-        return (new Post())->paginate(10);
+        $this->authorize('viewAny', Post::class);
+        return Post::paginate(10);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     *
-     */
+
     public function create()
     {
+        $this->authorize('create', Post::class);
         return view('post/create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     *
-     *
-     * @param PostRequest $post
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(PostRequest $post):RedirectResponse
+
+    public function store(PostRequest $request):RedirectResponse
     {
-        $post = (new Post($post->all()));
-        $post->user_id = Auth::user()->getAuthIdentifier();
-        $post->save();
-        return back()->with('status', 'Post created successfully!');
+        $this->authorize('create', Post::class);
+        $post = (new Post(request()->all()));
+        auth()->user()->posts()->save($post);
+        return back()->with('AddNewPost', 'Post created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Post $post
-     * @return void
-     */
     public function show(Post $post)
     {
-
+        $this->authorize('view', $post);
+        return view('post/show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Post $post
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function edit(Post $post): View
     {
+        $this->authorize('update', $post);
         return view('post/edit', ['post' => $post]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param PostRequest $request
-     * @param Post $post
-     *
-     */
     public function update(PostRequest $request,Post $post)
     {
+        $this->authorize('update', $post);
         $post->update($request->all());
         return redirect(route('home'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     *
-     */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
         $post->delete();
         return redirect(route('home'));
     }
-
-
 }

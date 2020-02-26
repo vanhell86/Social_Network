@@ -91,7 +91,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                v-pre style="position: relative; padding-left: 50px;"
                             >
-                                <img src="{{asset( "storage/uploads/avatars/". Auth::user()->avatar )}}"
+                                <img src="{{Auth()->user()->getProfilePic()}}"
                                      style="width: 32px; height: 32px; position: absolute; top: 5px;
                                      left: 10px; border-radius: 50%;"
                                 >

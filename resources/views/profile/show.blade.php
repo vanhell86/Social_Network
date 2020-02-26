@@ -74,8 +74,6 @@
                                             at: {{$post->created_at}}
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         @endforeach

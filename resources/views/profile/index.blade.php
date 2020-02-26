@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 pt-3 ">
-                <span style="font-size: 4em; display: block">Welcome {{Auth()->user()->name}}!</span>
-                <span style="font-size: 3em;display: block">Let's make some friends!</span>
+                <span style="font-size: 3em; display: block">Welcome {{Auth()->user()->name}}!</span>
+                <span style="font-size: 2em;display: block">Let's make some friends!</span>
             </div>
         </div>
 
@@ -21,15 +21,16 @@
                             <div>{{ session('Status') }}</div>
                         </div>
                     @endif
-                    {{--                    @foreach((($users = \App\User::whereNotIn('id', [Auth::id()])->paginate(9))) as $user)--}}
+
                     @foreach($users as $user)
 
                         <div class="col-sm-12 d-flex" style=" margin-bottom: 30px;">
                             <div class="col-sm-5">
                                 <label
                                     style="display: block"><strong>{{$user->name . ' ' . $user->surname }}</strong></label>
+{{--                                {{dd(asset("app/public/uploads/avatars/default.jpg"))}}--}}
                                 <a href="{{route('show.user.info', $user->slug())}}">
-                                    <img src="{{asset( "storage/uploads/avatars/". $user->avatar )}}"
+                                    <img src="{{$user->getProfilePic() }}"
                                          style="width: 150px; height: 150px;  ">
                                 </a>
                             </div>
