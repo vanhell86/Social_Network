@@ -24,9 +24,11 @@ class UserInfoRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
             'address' => ['string', 'max:100', 'nullable'],
             'phonenumber' => ['max:200'],
-            'bio' => ['max:25'],
+            'bio' => ['max:2500'],
             'dateofbirth' => ['date','before:today', 'date_format:Y-m-d', 'nullable']
         ];
     }

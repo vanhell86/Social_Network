@@ -11,10 +11,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.2/tinymce.min.js"
+            referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            selector:'textarea',
+            selector: 'textarea',
             plugins: 'link code',
             menubar: false
         });
@@ -58,10 +59,10 @@
                 <!-- Left Side Of Navbar -->
 
                 <ul class="navbar-nav mr-auto">
-{{--                    {{ dd( route('home') ) }}--}}
+
                     @if( Request::url() != route('home') )
                         <li class="nav-item left">
-                            <a href="{{ url('/home') }}">Home</a>
+                            <a href="{{ route('home') }}">Home</a>
                         </li>
                     @endif
                 </ul>
@@ -82,12 +83,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('posts.create') }}">{{ __('Create Post') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('index.user') }}">{{ __('Find friends') }}</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                v-pre style="position: relative; padding-left: 50px;"
                             >
-                                <img src="{{asset( "storage/uploads/avatars/". Auth::user()->avatar )}}"
+                                <img src="{{Auth()->user()->getProfilePic()}}"
                                      style="width: 32px; height: 32px; position: absolute; top: 5px;
                                      left: 10px; border-radius: 50%;"
                                 >
@@ -95,7 +99,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item fa fa-user" href="{{ route('profile.update', Auth::user()->slug())}}">
+                                <a class="dropdown-item fa fa-user"
+                                   href="{{ route('profile.update', Auth::user()->slug())}}">
                                     {{ __('Profile') }}
                                 </a>
 
