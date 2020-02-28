@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\Types\This;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -42,6 +45,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return "$this->id-$this->name-$this->surname";
     }
 
+    public function fPage()
+    {
+        $friends = $this->friends->paginate(4);
+        $friends->setPageName('friendPage');
+
+    }
 
     public function  getProfilePic(){
         if (!File::exists(storage_path("app/public/uploads/$this->id/avatars/" . $this->avatar ))){
@@ -165,6 +174,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
             'status'=>'confirmed'])->first();
+    }
+
+
+    /**************  Gallery section  ************/
+
+    public function albums()
+    {
+        return $this->hasMany(Album::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
     }
 
 }

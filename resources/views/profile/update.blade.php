@@ -1,37 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
 
-        {{-- >>>>>>>>>>>>>>>> Profile image adding section <<<<<<<<<<<<<<<<<<< --}}
-        <div class="row ">
-            <div class="col-md-10 col-md-offset-1">
-                @if (session('imgUploadStatus'))
-                    <div class="alert alert-success">
-                        {{ session('imgUploadStatus') }}
-                    </div>
-                @endif
-                @error('avatar')
-                <ul class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                @enderror
-                <img src="{{$user->getProfilePic()}}"
-                     style="width: 150px; height: 150px; float: left; border-radius: 50%; margin-right: 25px;">
-                <h2>
-                    {{ $user->name }}'s profile
-                </h2>
-                <form action="{{ route('update.avatar',$user->name) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <label style="display: block; font-size: 1.2em;"><strong>Update Profile Image</strong></label>
-                    <input type="file" name="avatar">
-                    <input type="submit" class="pull-right btn btn-sm btn-primary" value="Submit">
-                </form>
+
+    {{-- >>>>>>>>>>>>>>>> Profile image adding section <<<<<<<<<<<<<<<<<<< --}}
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-10 col-md-offset-1">
+                    @if (session('imgUploadStatus'))
+                        <div class="alert alert-success">
+                            {{ session('imgUploadStatus') }}
+                        </div>
+                    @endif
+                    @error('avatar')
+                    <ul class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    @enderror
+                    <img src="{{$user->getProfilePic()}}"
+                         style="width: 150px; height: 150px; float: left; border-radius: 50%; margin-right: 25px;">
+                    <h2>
+                        {{ $user->name }}'s profile
+                    </h2>
+                    <form action="{{ route('update.avatar',$user->name) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <label style="display: block; font-size: 1.2em;"><strong>Update Profile Image</strong></label>
+                        <input type="file" name="avatar">
+                        <input type="submit" class="pull-right btn btn-sm btn-primary" value="Submit">
+                    </form>
+                </div>
             </div>
         </div>
-
+    </div>
+    <div class="container">
         {{-- >>>>>>>>>>>>>>>> Profile info updating section <<<<<<<<<<<<<<<<<<< --}}
         <div class="row justify-content-center mt-5">
             <div class="col-md-10 col-md-offset-1">

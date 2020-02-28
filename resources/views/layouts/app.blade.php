@@ -81,11 +81,29 @@
                         @endif
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('posts.create') }}">{{ __('Create Post') }}</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('index.user') }}">{{ __('Find friends') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('albums.index') }}">{{ __('Gallery') }}</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                               v-pre style="position: relative; padding-left: 10px;"
+                            >
+                                Create <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item fa fa-plus"
+                                   href="{{ route('posts.create') }}">{{ __(' Create Post') }}
+                                </a>
+                                <a class="dropdown-item fa fa-plus"
+                                   href="{{ route('albums.create') }}">{{ __(' Create Album') }}
+                                </a>
+
+                            </div>
+                        </li>
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -127,4 +145,5 @@
     </main>
 </div>
 </body>
+
 </html>
