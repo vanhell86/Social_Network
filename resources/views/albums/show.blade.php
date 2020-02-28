@@ -14,6 +14,11 @@
 
     @if(count($album->photos) > 0)
         <div class="container">
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="row">
                 @foreach($album->photos as $photo)
                     <div class="col-md-4">

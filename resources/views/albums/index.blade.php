@@ -1,8 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 pt-3 d-flex justify-content-center">
+                    <div style="font-size: 3em; display: block">Gallery</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @if(count($albums) > 0)
             <div class="row">
                 @foreach($albums as $album)

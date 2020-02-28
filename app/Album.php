@@ -19,6 +19,11 @@ class Album extends Model
         return $this->hasMany(Photo::class);
     }
 
+    public function likes()
+    {
+        return $this->morphMany(Like::class,'likeable');
+    }
+
     public function getAlbumCover()
     {
         return Storage::url("uploads/$this->user_id/album_covers/". $this->cover_image);

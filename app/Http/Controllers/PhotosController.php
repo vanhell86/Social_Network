@@ -6,6 +6,7 @@ use App\Album;
 use App\Http\Requests\PhotoRequest;
 use App\Photo;
 use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class PhotosController extends Controller
 {
@@ -51,6 +52,12 @@ $album_id = $request->input('album_id');
     {
         $user = Auth()->user();
         $this->authorize('delete', $photo);
+//        var_dump($photo->getPhoto());
+//        dd(Storage::url("uploads/$user->id/albums/" . $photo->album->id . "/". $photo->photo));
+        if(Storage::delete("uploads/$user->id/albums/" . $photo->album->id . "/". $photo->photo)){
+            $photo->delete();
 
+            return redirect("albums/" . $photo->album->id )->with('success', "Photo deleted successfully!");
+        }
     }
 }

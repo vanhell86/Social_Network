@@ -11,7 +11,7 @@ class AlbumsController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Album::class);
-        $albums = Album::all();
+        $albums = Auth()->user()->albums;
 
         return view('albums.index', compact('albums'));
     }
