@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
@@ -50,8 +49,7 @@ class UserController extends Controller
             $avatar = $request->file('avatar');
             $fileName = time() . '.' . $avatar->getClientOriginalExtension();
             $user = Auth::user();
-//            dd(Storage::url("uploads/$user->id/avatars/"));
-            //dd(asset("app/public/uploads/$user->id/avatars/"));
+
             if (!File::exists(storage_path("app/public/uploads/$user->id/avatars/" )))
             {
                 File::makeDirectory(storage_path("app/public/uploads/$user->id/avatars/"),0755,true,true);
@@ -60,8 +58,6 @@ class UserController extends Controller
 
             $image = Image::make($avatar)->resize(300, 300)
                 ->save(storage_path("app/public/uploads/$user->id/avatars/" . $fileName));
-//            dd(Storage::url("uploads/$user->id/avatars/"));
-            //$avatar->store("uploads/$user->id/avatars/");
 
             $user->avatar = $fileName;
             $user->save();

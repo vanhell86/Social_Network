@@ -28,8 +28,14 @@
                                 <p class="card-text">{{$album->description}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{{route('albums.show', $album)}}" class="btn btn-sm btn-outline-secondary">View</a>
-{{--                                        <a href="" class="btn btn-sm btn-outline-secondary">Edit</a>--}}
+                                        <a href="{{route('albums.show', $album)}}"
+                                           class="btn btn-sm btn-outline-secondary mr-2">View</a>
+                                        <form action="{{route('albums.delete', $album)}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger fa fa-trash float-right"> Delete
+                                            </button>
+                                        </form>
                                     </div>
                                     <small class="text-muted">{{$album->name}}</small>
                                 </div>
@@ -39,7 +45,8 @@
                 @endforeach
             </div>
         @else
-            <h3>No albums yet!</h3>
+            <h3>No albums yet! Create some!</h3>
+            <a href="{{route('albums.create')}}">Create new album</a>
         @endif
     </div>
 

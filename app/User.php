@@ -4,12 +4,9 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\This;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -40,23 +37,23 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**************Friendly link**************/
-    public function slug():string
+    public function slug(): string
     {
         return "$this->id-$this->name-$this->surname";
     }
 
-    public function fPage()
+    public function userInfo()
     {
-        $friends = $this->friends->paginate(4);
-        $friends->setPageName('friendPage');
-
+        return User::where('id', $this->id)->select('name', 'surname', 'email', 'address',
+            'phonenumber', 'bio', 'dateofbirth')->get();
     }
 
-    public function  getProfilePic(){
-        if (!File::exists(storage_path("app/public/uploads/$this->id/avatars/" . $this->avatar ))){
+    public function getProfilePic()
+    {
+        if (!File::exists(storage_path("app/public/uploads/$this->id/avatars/" . $this->avatar))) {
             return Storage::url("uploads/avatars/default.jpg");
         }
-        return Storage::url("uploads/$this->id/avatars/". $this->avatar);
+        return Storage::url("uploads/$this->id/avatars/" . $this->avatar);
     }
 
     /************   post relation  ************/
@@ -64,6 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Post::class);
     }
+
     /************  get all posts from self and followers  ************/
     public function getFeed()
     {
@@ -72,6 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return Post::whereIn('user_id', $userIds)->latest()->paginate(5);
     }
 
+
     public function follow()
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
@@ -79,13 +78,47 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function followers()
     {
-        return $this->belongsToMany(User::class,'followers','user_id', 'follower_id');
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
     }
 
     public function isFollowing(User $user)
     {
         return $this->follow()->where(['user_id' => $user->id, 'follower_id' => $this->id])->first();
     }
+
+    public function getFriendsAttribute()
+    {
+        if (!array_key_exists('friends', $this->relations)) $this->loadFriends();
+        return $this->getRelation('friends');
+    }
+
+    protected function loadFriends()
+    {
+        if (!array_key_exists('friends', $this->relations)) {
+            $friends = $this->mergeFriends();
+            $this->setRelation('friends', $friends);
+        }
+    }
+
+    // friendship that this user started
+
+    protected function mergeFriends()
+    {
+        if ($temp = $this->friendsOfThisUser)
+            return $temp->merge($this->thisUserFriendOf);
+        else
+            return $this->thisUserFriendOf;
+    }
+
+    // friendship that this user was asked for
+
+    public function hasSentFriendRequest(User $user)
+    {
+        return $this->friendRequestsOfThisUser()->where(['user_id' => $this->id, 'friend_id' => $user->id,
+            'status' => 'pending'])->first();
+    }
+
+    // accessor allowing you call $user->friends
 
     /**************  Friend request section  ************/
     public function friendRequestsOfThisUser()
@@ -95,6 +128,12 @@ class User extends Authenticatable implements MustVerifyEmail
             ->wherePivot('status', 'pending');
     }
 
+    public function hasReceivedFriendRequest(User $user)
+    {
+        return $this->friendRequestsToThisUser()->where(['user_id' => $user->id, 'friend_id' => $this->id,
+            'status' => 'pending'])->first();
+    }
+
     public function friendRequestsToThisUser()
     {
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
@@ -102,7 +141,16 @@ class User extends Authenticatable implements MustVerifyEmail
             ->wherePivot('status', 'pending');
     }
 
-    // friendship that this user started
+    public function areFriends(User $user)
+    {
+        return
+            ($this->friendsOfThisUser()->where(['user_id' => $this->id, 'friend_id' => $user->id,
+                    'status' => 'confirmed'])->first() ||
+                $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
+                    'status' => 'confirmed'])->first()
+            );
+    }
+
     public function friendsOfThisUser()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
@@ -110,70 +158,23 @@ class User extends Authenticatable implements MustVerifyEmail
             ->wherePivot('status', 'confirmed');
     }
 
-    // friendship that this user was asked for
     public function thisUserFriendOf()
     {
-        return  $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
             ->withPivot('status')
             ->wherePivot('status', 'confirmed');
-    }
-
-    // accessor allowing you call $user->friends
-    public function getFriendsAttribute()
-    {
-        if ( ! array_key_exists('friends', $this->relations)) $this->loadFriends();
-        return $this->getRelation('friends');
-    }
-
-    protected function loadFriends()
-    {
-        if ( ! array_key_exists('friends', $this->relations))
-        {
-            $friends = $this->mergeFriends();
-            $this->setRelation('friends', $friends);
-        }
-    }
-
-    protected function mergeFriends()
-    {
-        if($temp = $this->friendsOfThisUser)
-            return $temp->merge($this->thisUserFriendOf);
-        else
-            return $this->thisUserFriendOf;
-    }
-
-    public function hasSentFriendRequest(User $user)
-    {
-        return $this->friendRequestsOfThisUser()->where(['user_id' => $this->id, 'friend_id' => $user->id,
-            'status'=>'pending'])->first();
-    }
-
-    public function hasReceivedFriendRequest(User $user)
-    {
-        return $this->friendRequestsToThisUser()->where(['user_id' => $user->id, 'friend_id' => $this->id,
-            'status'=>'pending'])->first();
-    }
-
-    public function areFriends(User $user)
-    {
-        return
-            ($this->friendsOfThisUser()->where(['user_id' => $this->id, 'friend_id' => $user->id,
-                'status'=>'confirmed'])->first() ||
-            $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
-                'status'=>'confirmed'])->first()
-        );
     }
 
     public function isFriendWith(User $user)
     {
         return $this->friendsOfThisUser()->where(['user_id' => $this->id, 'friend_id' => $user->id,
-            'status'=>'confirmed'])->first();
+            'status' => 'confirmed'])->first();
     }
 
     public function isFriendOf(User $user)
     {
         return $this->thisUserFriendOf()->where(['user_id' => $user->id, 'friend_id' => $this->id,
-            'status'=>'confirmed'])->first();
+            'status' => 'confirmed'])->first();
     }
 
 

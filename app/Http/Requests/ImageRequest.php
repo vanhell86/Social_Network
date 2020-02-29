@@ -28,7 +28,7 @@ class ImageRequest extends FormRequest
                 'required',
                 'image',
                 'mimes:jpeg,png,jpg,gif,svg',
-                'file'=>'max:2048',
+                ['file' => 'max:2048'],
             ]
         ];
     }

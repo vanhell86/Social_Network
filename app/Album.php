@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Album extends Model
 {
-    protected $fillable = ['user_id','name', 'description','cover_image'];
+    protected $fillable = ['user_id', 'name', 'description', 'cover_image'];
 
     public function user()
     {
@@ -21,12 +21,12 @@ class Album extends Model
 
     public function likes()
     {
-        return $this->morphMany(Like::class,'likeable');
+        return $this->morphMany(Like::class, 'likeable');
     }
 
     public function getAlbumCover()
     {
-        return Storage::url("uploads/$this->user_id/album_covers/". $this->cover_image);
+        return Storage::url("uploads/$this->user_id/album_covers/" . $this->cover_image);
     }
 
 }

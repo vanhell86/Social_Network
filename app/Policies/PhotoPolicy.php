@@ -12,7 +12,7 @@ class PhotoPolicy
 
     public function viewAny(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
 
@@ -25,17 +25,17 @@ class PhotoPolicy
 
     public function create(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
     public function update(User $user, Photo $photo)
     {
-        return (int) $photo->user_id === (int) $user->id;
+        return (int)$photo->user_id === (int)$user->id;
     }
 
     public function delete(User $user, Photo $photo)
     {
-        return (int) $photo->user_id === (int) $user->id;
+        return (int)$photo->user_id === (int)$user->id;
     }
 
 }

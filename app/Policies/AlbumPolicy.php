@@ -13,7 +13,7 @@ class AlbumPolicy
 
     public function viewAny(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
 
@@ -27,18 +27,18 @@ class AlbumPolicy
 
     public function create(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
 
     public function update(User $user, Album $album)
     {
-        return (int) $album->user_id === (int) $user->id;
+        return (int)$album->user_id === (int)$user->id;
     }
 
 
     public function delete(User $user, Album $album)
     {
-        return (int) $album->user_id === (int) $user->id;
+        return (int)$album->user_id === (int)$user->id;
     }
 }

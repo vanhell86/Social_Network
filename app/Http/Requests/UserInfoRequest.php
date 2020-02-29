@@ -29,7 +29,7 @@ class UserInfoRequest extends FormRequest
             'address' => ['string', 'max:100', 'nullable'],
             'phonenumber' => ['max:200'],
             'bio' => ['max:2500'],
-            'dateofbirth' => ['date','before:today', 'date_format:Y-m-d', 'nullable']
+            'dateofbirth' => ['date', 'before:today', 'date_format:Y-m-d', 'nullable']
         ];
     }
 }

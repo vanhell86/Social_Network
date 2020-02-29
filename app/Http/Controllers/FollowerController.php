@@ -21,5 +21,4 @@ class FollowerController extends Controller
         $follower->follow()->detach($user);
         return back()->with('Status', "You unfollowed {$user->name}");
     }
-
 }
