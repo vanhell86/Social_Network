@@ -13,7 +13,9 @@
                             <input type="hidden" name="album_id" value="{{$album->id}}">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" id="title" placeholder="Enter title">
+                                <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                       name="title" id="title" placeholder="Enter title"
+                                       value="{{ old('title') }}">
                                 @error('title')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -22,7 +24,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <input type="text" class="form-control  @error('description') is-invalid @enderror" name="description" id="description"
+                                <input type="text" class="form-control  @error('description') is-invalid @enderror"
+                                       name="description" id="description" value="{{ old('description') }}"
                                        placeholder="Enter description">
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
@@ -32,7 +35,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="photo">Photo</label>
-                                <input type="file" class="form-control  @error('photo') is-invalid @enderror" name="photo" id="photo">
+                                <input type="file" class="form-control  @error('photo') is-invalid @enderror"
+                                       name="photo" id="photo">
                                 @error('photo')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

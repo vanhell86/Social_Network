@@ -24,9 +24,9 @@ class AlbumRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required'],
-            'description'=>['required'],
-            'cover_image'=>['required','image'],
+            'name' => ['required'],
+            'description' => ['required'],
+            'cover_image' => ['required', 'image'],
         ];
     }
 }

@@ -19,7 +19,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::get('profile/{user}rou/edit', 'UserController@showProfileUpdateForm')->name('profile.update')->middleware('auth');
+Route::get('profile/{user}/edit', 'UserController@showProfileUpdateForm')->name('profile.update')->middleware('auth');
 Route::put('profile/{user}/change_password', 'UserController@changePassword')->name('user.password.change')->middleware('auth');
 Route::get('profile', 'UserController@index')->name('index.user')->middleware('auth');
 Route::get('profile/{user}', 'UserController@show')->name('show.user.info');
@@ -31,6 +31,10 @@ Route::resource('posts', 'PostsController')->middleware('verified');
 
 
 Route::post('follow/{user}', 'FollowerController@followUser')->name('follow')->middleware('auth');
+
+Route::get('friends/{user}', 'FriendsController@index')->name('friends.index')->middleware('auth');
+Route::get('friendsRequest/{user}', 'FriendsController@requests')->name('friends.request')->middleware('auth');
+
 Route::post('friendRequest/{user}', 'FriendsController@sendFriendRequest')->name('send.friend.request')->middleware('auth');
 Route::patch('friendRequest/{user}', 'FriendsController@acceptFriend')->name('accept.friendship')->middleware('auth');
 Route::delete('friendRequest/{user}', 'FriendsController@endFriendship')->name('end.friendship')->middleware('auth');
@@ -39,6 +43,7 @@ Route::get('albums', 'AlbumsController@index')->name('albums.index')->middleware
 Route::get('albums/create', 'AlbumsController@create')->name('albums.create')->middleware('auth');
 Route::post('albums', 'AlbumsController@store')->name('albums.store')->middleware('auth');
 Route::get('albums/{album}', 'AlbumsController@show')->name('albums.show')->middleware('auth');
+Route::delete('albums/{album}', 'AlbumsController@destroy')->name('albums.delete')->middleware('auth');
 
 
 Route::get('photos/{album}/create', 'PhotosController@create')->name('photos.create')->middleware('auth');
@@ -46,6 +51,11 @@ Route::post('photos/store', 'PhotosController@store')->name('photos.store')->mid
 Route::get('photos/{photo}', 'PhotosController@show')->name('photos.show')->middleware('auth');
 Route::delete('photos/{photo}', 'PhotosController@destroy')->name('photos.delete')->middleware('auth');
 
+Route::post('photo/{photo}', 'Likes\LikePhotoController')->name('photo.like')->middleware('auth');
+Route::delete('photo/{photo}', 'Likes\UnLikePhotoController')->name('photo.unlike')->middleware('auth');
 
+
+Route::post('post/{post}', 'Likes\LikePostController')->name('post.like')->middleware('auth');
+Route::delete('post/{post}', 'Likes\UnLikePostController')->name('post.unlike')->middleware('auth');
 
 

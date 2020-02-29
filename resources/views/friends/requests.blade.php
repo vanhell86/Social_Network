@@ -4,15 +4,14 @@
     <div class="jumbotron">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8 pt-3 ">
-                    <span style="font-size: 3em; display: block">Welcome {{Auth()->user()->name}}!</span>
-                    <span style="font-size: 2em;display: block">Let's make some friends!</span>
+                <div class="col-md-8 pt-3 d-flex justify-content-center ">
+                    <span style="font-size: 3em; display: block">Friend requests</span>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- >>>>>>>>>>>>>>>> Find friends section<<<<<<<<<<<<<<<<<<< --}}
+    {{-- >>>>>>>>>>>>>>>> All friends section<<<<<<<<<<<<<<<<<<< --}}
     <div class="container">
         <div class="row justify-content-center">
 
@@ -26,7 +25,7 @@
                         </div>
                     @endif
 
-                    @foreach($users as $user)
+                    @foreach($user->friendRequestsToThisUser as $user)
 
                         <div class="col-sm-12 d-flex" style=" margin-bottom: 30px;">
                             <div class="col-sm-5">
@@ -41,15 +40,8 @@
                             <div class="col-sm-5 align-items-center" style="display: flex;
   flex-direction: row;
   justify-content: center;">
-                                @if(Auth()->user()->areFriends($user))
-                                    <form action="{{route('end.friendship', $user)}}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="pull-right btn btn-sm btn-primary">
-                                            {{ __('Unfriend') }}
-                                        </button>
-                                    </form>
-                                @elseif(Auth()->user()->hasReceivedFriendRequest($user))
+
+                                @if(Auth()->user()->hasReceivedFriendRequest($user))
                                     <form action="{{route('accept.friendship', $user)}}" method="post">
                                         @csrf
                                         @method('PATCH')
@@ -58,16 +50,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <form action="{{route('send.friend.request', $user)}}" method="post">
-                                        @csrf
-                                        <button type="submit" class="pull-right btn btn-sm btn-primary">
-                                            @if( ! Auth()->user()->hasSentFriendRequest($user))
-                                                {{ __('Send friend request') }}
-                                            @else
-                                                {{ __('Cancel friend request') }}
-                                            @endif
-                                        </button>
-                                    </form>
+                                   User has no active friend requests
                                 @endif
                                 <form action="{{route('follow', $user)}}" method="post">
                                     @csrf
@@ -79,17 +62,11 @@
                                         @endif
                                     </button>
                                 </form>
-
                             </div>
                         </div>
-
                     @endforeach
-
                 </div>
             </div>
-        </div>
-        <div style="display: flex; justify-content: center;">
-            {{ $users->links() }}
         </div>
     </div>
 @endsection

@@ -29,6 +29,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/test.css') }}" rel="stylesheet">
     <style>
         .nav-item.left > a {
             color: #636b6f;

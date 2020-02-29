@@ -13,7 +13,7 @@ class PostPolicy
 
     public function viewAny(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
 
@@ -27,19 +27,19 @@ class PostPolicy
 
     public function create(User $user)
     {
-        return (int) auth()->user()->id === (int) $user->id;
+        return (int)auth()->user()->id === (int)$user->id;
     }
 
 
     public function update(User $user, Post $post)
     {
-        return (int) $post->user_id === (int) $user->id;
+        return (int)$post->user_id === (int)$user->id;
     }
 
 
     public function delete(User $user, Post $post)
     {
-        return (int) $post->user_id === (int) $user->id;
+        return (int)$post->user_id === (int)$user->id;
     }
 
 }

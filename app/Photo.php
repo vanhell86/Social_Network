@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Photo extends Model
 {
-    protected $fillable = ['user_id', 'album_id','photo', 'title', 'size', 'description'];
+    protected $fillable = ['user_id', 'album_id', 'photo', 'title', 'size', 'description'];
 
     public function album()
     {
@@ -19,8 +19,23 @@ class Photo extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function liked()
+    {
+        return $this->likes()->where('user_id', Auth()->id())->count() > 0;
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function countLikes()
+    {
+        return $this->likes()->count();
+    }
+
     public function getPhoto()
     {
-        return Storage::url("uploads/$this->user_id/albums/$this->album_id/". $this->photo);
+        return Storage::url("uploads/$this->user_id/albums/$this->album_id/" . $this->photo);
     }
 }

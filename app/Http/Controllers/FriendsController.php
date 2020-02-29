@@ -7,11 +7,21 @@ use Illuminate\Support\Facades\Auth;
 
 class FriendsController extends Controller
 {
+    public function index(User $user)
+    {
+        return view('friends.index', compact('user'));
+    }
+
+    public function requests(User $user)
+    {
+        return view('friends.requests', compact('user'));
+    }
+
     public function sendFriendRequest(User $user)
     {
         $authUser = Auth::user();
 
-        if (! ($authUser->hasSentFriendRequest($user))) {       //check if auth user sent Friend request
+        if (!($authUser->hasSentFriendRequest($user))) {       //check if auth user sent Friend request
             $authUser->friendRequestsOfThisUser()->attach($user, ['status' => 'pending']);
             return back()->with('Status', "You have sent friend request to  {$user->name}");
         }
@@ -36,6 +46,16 @@ class FriendsController extends Controller
         }
     }
 
+    private function dettachFollowers(User $currentUser, User $user)
+    {
+        if ($currentUser->isFollowing($user)) {
+            $currentUser->follow()->detach($user);
+        }
+        if ($user->isFollowing($currentUser)) {
+            $currentUser->followers()->detach($user);
+        }
+    }
+
     public function acceptFriend(User $user)
     {
         $currentUser = Auth::user();
@@ -48,15 +68,5 @@ class FriendsController extends Controller
             $currentUser->followers()->attach($user);
         }
         return back();
-    }
-
-    private function dettachFollowers(User $currentUser, User $user)
-    {
-        if ($currentUser->isFollowing($user)) {
-            $currentUser->follow()->detach($user);
-        }
-        if ($user->isFollowing($currentUser)) {
-            $currentUser->followers()->detach($user);
-        }
     }
 }

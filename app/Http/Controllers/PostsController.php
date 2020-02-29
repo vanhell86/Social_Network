@@ -6,8 +6,6 @@ use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -32,7 +30,7 @@ class PostsController extends Controller
     }
 
 
-    public function store(PostRequest $request):RedirectResponse
+    public function store(PostRequest $request): RedirectResponse
     {
         $this->authorize('create', Post::class);
         $post = (new Post(request()->all()));
@@ -52,7 +50,7 @@ class PostsController extends Controller
         return view('post/edit', ['post' => $post]);
     }
 
-    public function update(PostRequest $request,Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $this->authorize('update', $post);
         $post->update($request->all());
