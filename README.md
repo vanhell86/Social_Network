@@ -30,7 +30,8 @@ This is a Social Network application built with Laravel.
     Like Posts, Images
     
     ### Pages 
-    There are 8 pages. which are Login and Register, Home Page, Find Friends, Gallery, Create Post and Create Gallery and                                       Profile.
+    There are 8 pages. which are Login and Register, Home Page, Find Friends, Gallery, Create Post and Create Gallery and
+    Profile.
     Home page is where you can see your timeline.
     Find Friends for viewing all users on network and their profiles.
     Create for creating posts and galleries.
